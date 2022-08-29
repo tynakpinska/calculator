@@ -1,0 +1,32 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: antiquewhite;
+}
+
+.container {
+    display: flex;
+}
+
+textarea {
+    margin: 20px auto;
+    font-size: 30px;
+    border-radius: 10px;
+}
+
+button {
+    width: 50px;
+    height: 50px;
+    background-color: aquamarine;
+    border: 3px solid green;
+    border-radius: 10px;
+}
+
+button:hover {
+    cursor: pointer;
+    background-color: rgb(94, 196, 162);
+}
