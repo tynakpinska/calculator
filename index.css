@@ -10,6 +10,7 @@ body {
 
 .container {
     display: flex;
+    flex-direction: column;
 }
 
 textarea {
@@ -29,4 +30,9 @@ button {
 button:hover {
     cursor: pointer;
     background-color: rgb(94, 196, 162);
+}
+
+.operator {
+    background-color: aqua;
+    border: 3px solid blue;
 }
