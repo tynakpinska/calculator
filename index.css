@@ -11,12 +11,26 @@ body {
 .container {
     display: flex;
     flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    height: 50vh;
+    color:blanchedalmond;
 }
 
-textarea {
-    margin: 20px auto;
+.operation, .result {
+    width: 50vw;
+    height: 10vh;
+    padding: 10px;
     font-size: 30px;
+    background-color: teal;
     border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.operation {
+    margin-bottom: 10px;
 }
 
 button {
