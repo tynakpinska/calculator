@@ -1,12 +1,12 @@
 const operate = (operator, num1, num2) => {
   switch (operator) {
-    case "add":
+    case "+":
       return num1 + num2;
-    case "substract":
+    case "-":
       return num1 - num2;
-    case "multiply":
+    case "*":
       return num1 * num2;
-    case "divide":
+    case "/":
       return num1 / num2;
   }
 };
@@ -53,14 +53,8 @@ const updateDisplay = e => {
   ) {
     let numbers = display.textContent.split(regOperator);
     let operator = display.textContent.match(regOperator);
-    const operations = {
-      '+': 'add',
-      '-': 'substract',
-      '*': 'multiply',
-      '/': 'divide'
-    }
     display.textContent = operate(
-      operations[operator],
+      operator[0],
       Number(numbers[0]),
       Number(numbers[1])
     );
