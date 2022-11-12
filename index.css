@@ -1,52 +1,67 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-    background-color: antiquewhite;
+  background-color: antiquewhite;
 }
 
 .container {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
-    height: 50vh;
-    color:blanchedalmond;
+  margin: 3vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  width: 30vw;
+  color: blanchedalmond;
 }
 
-.operation, .result {
-    width: 50vw;
-    height: 10vh;
-    padding: 10px;
-    font-size: 30px;
-    background-color: teal;
-    border-radius: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.display {
+    width: 100%;
 }
 
-.operation {
-    margin-bottom: 10px;
+.operation,
+.result {
+  height: 10vh;
+  padding: 10px;
+  font-size: 30px;
+  background-color: teal;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.digits, .operators, .functions {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 8px;
+    margin-bottom: 5px;
+}
+
+.digits {
+    grid-template-rows: repeat(4, 1fr);
 }
 
 button {
-    width: 50px;
-    height: 50px;
-    background-color: aquamarine;
-    border: 3px solid green;
-    border-radius: 10px;
+  background-color: aquamarine;
+  border: 3px solid green;
+  border-radius: 10px;
+  align-self: stretch;
+  height: 7vw;
+  font-size: 20px;
 }
 
 button:hover {
-    cursor: pointer;
-    background-color: rgb(94, 196, 162);
+  cursor: pointer;
+  background-color: rgb(94, 196, 162);
 }
 
 .operator {
-    background-color: aqua;
-    border: 3px solid blue;
+  background-color: aqua;
+  border: 3px solid blue;
 }

@@ -2,7 +2,15 @@ let display = document.querySelector(".operation");
 let result = document.querySelector(".result");
 
 const operate = (displayContent, regOperator) => {
-  let numbers = displayContent.split(regOperator);
+  let numbers = [];
+  if (regOperator.test(displayContent[0])) {
+    numbers[0] = displayContent[0] + displayContent[1];
+    let shortenedDisplayContent = displayContent.slice(2, displayContent.length);
+    numbers.splice(1, 0, ...shortenedDisplayContent.split(regOperator));
+  } else {
+    numbers = displayContent.split(regOperator);
+  }
+  numbers = numbers.filter(n => n !== "");
   let operator = displayContent.match(regOperator)
     ? displayContent.match(regOperator)[0]
     : undefined;
@@ -60,6 +68,7 @@ const updateDisplay = e => {
     return;
   }
 
+  // if clicked character is operator and the last character in display is also operator, exchange operator to the clicked one
   if (
     regOperator.test(clickedChar) &&
     regOperatorEnd.test(display.textContent)
@@ -80,6 +89,7 @@ const updateDisplay = e => {
 
   if (clickedChar === "=") {
     operate(display.textContent, regOperator);
+    display.textContent = result.textContent;
     return;
   }
 
