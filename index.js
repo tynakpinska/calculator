@@ -1,129 +1,179 @@
-let display = document.querySelector(".operation");
-let result = document.querySelector(".result");
+let operationDisplay = document.querySelector(".operation");
+let resultDisplay = document.querySelector(".result");
+
+operationDisplay.textContent = "";
+resultDisplay.textContent = 0;
+let num1 = 0;
+let num2 = 0;
+let operator = "";
+let outcome = 0;
 
 const calculate = (num1, num2, operator) => {
-  console.log("num1: ", num1, "num2: ", num2, "operator: ", operator);
+  operationDisplay.textContent = `${num1} ${operator} ${num2}`;
   if (operator === "/" && num2 === 0) {
-    result.textContent = "error";
+    resultDisplay.textContent = "error";
     return;
   }
   if (!num2 || !operator) {
-    result.textContent = num1;
+    resultDisplay.textContent = num1;
     return;
   }
-  if (num1 && num2) {
-    switch (operator) {
-      case "+":
-        return (num1 + num2).toString().length > 10
+
+  switch (operator) {
+    case "+":
+      outcome =
+        (num1 + num2).toString().length > 10
           ? (num1 + num2).toPrecision(10)
           : num1 + num2;
-      case "-":
-        return (num1 - num2).toString().length > 10
+      break;
+    case "-":
+      outcome =
+        (num1 - num2).toString().length > 10
           ? (num1 - num2).toPrecision(10)
           : num1 - num2;
-      case "*":
-        return (num1 * num2).toString().length > 10
+      break;
+    case "*":
+      outcome =
+        (num1 * num2).toString().length > 10
           ? (num1 * num2).toPrecision(10)
           : num1 * num2;
-
-      case "/":
-        return (num1 / num2).toString().length > 10
+      break;
+    case "/":
+      outcome =
+        (num1 / num2).toString().length > 10
           ? (num1 / num2).toPrecision(10)
           : num1 / num2;
-    }
-  }
-};
-
-const parseDisplayContent = (displayContent, regOperator) => {
-  let numbers = [];
-  if (regOperator.test(displayContent[0])) {
-    numbers[0] = displayContent[0] + displayContent[1];
-    let shortenedDisplayContent = displayContent.slice(
-      2,
-      displayContent.length
-    );
-    numbers.splice(1, 0, ...shortenedDisplayContent.split(regOperator));
-  } else {
-    numbers = displayContent.split(regOperator);
-  }
-  numbers = numbers.filter(n => n !== "");
-  console.log(numbers);
-
-  let num1 = numbers[0] ? Number(numbers[0]) : undefined;
-  let num2 = numbers[1] ? Number(numbers[1]) : undefined;
-
-  let operators = displayContent.match(regOperator);
-
-  let operator = operators
-    ? num1 < 0
-      ? operators[1]
-      : operators[0]
-    : undefined;
-
-  if (numbers.length > 2) {
-    num1 = calculate(num1, num2, operator);
-    numbers.shift();
-    numbers[0] = num1;
-    num2 = numbers[1] ? Number(numbers[1]) : undefined;
-    operator = displayContent.match(regOperator)[1];
+      break;
   }
 
-  result.textContent = calculate(num1, num2, operator);
+  console.table({
+    num1,
+    num2,
+    operator,
+    outcome,
+  });
+
+  return [num1, num2, outcome];
 };
 
 const removeLastChar = () => {
-  display.textContent = display.textContent.substring(
+  operationDisplay.textContent = operationDisplay.textContent.substring(
     0,
-    display.textContent.length - 1
+    operationDisplay.textContent.length - 1
   );
 };
 
 const addClickedChar = clickedChar => {
-  display.textContent = display.textContent + clickedChar;
+  operationDisplay.textContent = operationDisplay.textContent + clickedChar;
 };
 
 const replaceOperator = (reg, clickedOperator) => {
-  display.textContent = display.textContent.replace(reg, clickedOperator);
+  operationDisplay.textContent = operationDisplay.textContent.replace(
+    reg,
+    clickedOperator
+  );
+};
+
+const clearData = () => {
+  num1 = 0;
+  num2 = 0;
+  operator = "";
+  operationDisplay.textContent = "";
+  resultDisplay.textContent = 0;
 };
 
 const updateDisplay = e => {
+  e.preventDefault();
+
   let regOperator = new RegExp(/[\+\-\*\/]/g);
   let regOperatorEnd = new RegExp(/[\+\-\*\/]$/);
-  let clickedChar = e.key ? e.key : e.target.textContent;
+  let regDigits = new RegExp(/[0-9]/);
 
-  if (clickedChar === "CLEAR") {
-    display.textContent = "";
-    result.textContent = "";
+  // if clicked key is not an operator or a digit, don't do anything
+  if (
+    e.key &&
+    !(
+      e.key.match(regDigits) ||
+      e.key.match(regOperator) ||
+      e.key === "Backspace" ||
+      e.key === "Enter" ||
+      e.key === "Delete" ||
+      e.key === ","
+    )
+  ) {
     return;
+  }
+
+  let clickedChar =
+    e.key &&
+    (e.key.match(regDigits) ||
+      e.key.match(regOperator) ||
+      e.key === "Backspace" ||
+      e.key === "Enter" ||
+      e.key === "Delete" ||
+      e.key === ",")
+      ? e.key
+      : e.target.textContent;
+
+  if (regOperator.test(clickedChar)) {
+    operator = clickedChar;
+  }
+
+  if (clickedChar === "CLEAR" || clickedChar === "Delete") {
+    clearData();
+    return;
+  }
+
+  if (clickedChar === "🠄" || clickedChar === "Backspace") {
+    removeLastChar();
+    return;
+  }
+
+  if (clickedChar !== "Enter" && clickedChar !== "=") {
+    addClickedChar(clickedChar);
+  }
+
+  // TO FIX - WHEN DIGIT IS CLICKED AFTER CALCULATION
+  // CALCULATIONS ON FRACTIONS
+  // WHEN FIRST DIGIT IS NEGATIVE
+
+  if (regDigits.test(clickedChar)) {
+    if (!num1 && operator) {
+      num2 = Number(operationDisplay.textContent);
+      resultDisplay.textContent = num2;
+    } else if (!num1 || (num1 && !operator)) {
+      num1 = Number(`${num1}${clickedChar}`);
+      resultDisplay.textContent = num1;
+    } else {
+      num2 = num2 ? Number(`${num2}${clickedChar}`) : Number(clickedChar);
+      resultDisplay.textContent = num2;
+    }
   }
 
   // if clicked character is operator and the last character in display is also operator, exchange operator to the clicked one
   if (
     regOperator.test(clickedChar) &&
-    regOperatorEnd.test(display.textContent)
+    regOperatorEnd.test(operationDisplay.textContent)
   ) {
     replaceOperator(regOperatorEnd, clickedChar);
     return;
   }
 
-  if (clickedChar === "." && display.textContent.includes(".")) {
-    return;
-  }
+  operationDisplay.textContent = `${num1} ${operator}`;
 
-  if (clickedChar === "🠄") {
-    removeLastChar();
-    parseDisplayContent(display.textContent, regOperator);
-    return;
+  if (
+    (clickedChar === "=" || clickedChar === "Enter") &&
+    operator !== "" &&
+    num2
+  ) {
+    let result = calculate(num1, num2, operator);
+    outcome = result[2];
+    operationDisplay.textContent = `${num1} ${operator} ${num2} =`;
+    num1 = outcome;
+    num2 = 0;
+    operator = "";
+    resultDisplay.textContent = num1;
   }
-
-  if (clickedChar === "=") {
-    parseDisplayContent(display.textContent, regOperator);
-    display.textContent = result.textContent;
-    return;
-  }
-
-  addClickedChar(clickedChar);
-  parseDisplayContent(display.textContent, regOperator);
 };
 
 const buttons = document.querySelectorAll("button");

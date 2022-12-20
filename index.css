@@ -6,6 +6,8 @@
 
 body {
   background-color: antiquewhite;
+  display: flex;
+  justify-content: center;
 }
 
 .container {
@@ -49,7 +51,6 @@ body {
 
 button {
   background-color: aquamarine;
-  border: 3px solid green;
   border-radius: 10px;
   align-self: stretch;
   height: 7vw;
@@ -63,5 +64,4 @@ button:hover {
 
 .operator {
   background-color: aqua;
-  border: 3px solid blue;
 }
