@@ -137,11 +137,14 @@ const updateDisplay = e => {
     addClickedChar(clickedChar);
   }
 
-  // TO FIX - WHEN DIGIT IS CLICKED AFTER CALCULATION
   // CALCULATIONS ON FRACTIONS
 
   if (regDigits.test(clickedChar)) {
-    if (num1 == "-") {
+    if (outcome) {
+      num1 = clickedChar;
+      outcome = "";
+      resultDisplay.textContent = num1;
+    } else if (num1 == "-") {
       num1 = Number(`${num1}${clickedChar}`);
     } else if (!num1 && operator) {
       num2 = Number(operationDisplay.textContent);
