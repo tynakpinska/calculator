@@ -8,6 +8,10 @@ body {
   background-color: antiquewhite;
   display: flex;
   justify-content: center;
+  background-image: url(/background.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 100vh;
 }
 
 .container {
@@ -16,7 +20,7 @@ body {
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  width: 30vw;
+  width: 20vw;
   color: blanchedalmond;
 }
 
@@ -26,15 +30,16 @@ body {
 
 .operation,
 .result {
-  height: 10vh;
+  height: 8vh;
   padding: 10px;
   font-size: 30px;
-  background-color: teal;
+  background-color: brown;
   border-radius: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
   margin-bottom: 10px;
+  opacity: .8;
 }
 
 .digits, .operators, .functions {
@@ -50,11 +55,13 @@ body {
 }
 
 button {
-  background-color: aquamarine;
+  background-color: rgb(238, 238, 172);
   border-radius: 10px;
   align-self: stretch;
-  height: 7vw;
+  height: 5vw;
   font-size: 20px;
+  opacity: .8;
+  border: none;
 }
 
 button:hover {
@@ -63,5 +70,5 @@ button:hover {
 }
 
 .operator {
-  background-color: aqua;
+  background-color: rgb(235, 167, 108);
 }
