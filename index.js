@@ -3,10 +3,10 @@ let resultDisplay = document.querySelector(".result");
 
 operationDisplay.textContent = "";
 resultDisplay.textContent = 0;
-let num1 = 0;
-let num2 = 0;
+let num1 = "";
+let num2 = "";
 let operator = "";
-let outcome = 0;
+let outcome = "";
 
 const calculate = (num1, num2, operator) => {
   operationDisplay.textContent = `${num1} ${operator} ${num2}`;
@@ -116,7 +116,11 @@ const updateDisplay = e => {
       : e.target.textContent;
 
   if (regOperator.test(clickedChar)) {
-    operator = clickedChar;
+    if (clickedChar == "-" && !num1) {
+      num1 = clickedChar;
+    } else {
+      operator = clickedChar;
+    }
   }
 
   if (clickedChar === "CLEAR" || clickedChar === "Delete") {
@@ -135,10 +139,11 @@ const updateDisplay = e => {
 
   // TO FIX - WHEN DIGIT IS CLICKED AFTER CALCULATION
   // CALCULATIONS ON FRACTIONS
-  // WHEN FIRST DIGIT IS NEGATIVE
 
   if (regDigits.test(clickedChar)) {
-    if (!num1 && operator) {
+    if (num1 == "-") {
+      num1 = Number(`${num1}${clickedChar}`);
+    } else if (!num1 && operator) {
       num2 = Number(operationDisplay.textContent);
       resultDisplay.textContent = num2;
     } else if (!num1 || (num1 && !operator)) {
