@@ -137,20 +137,33 @@ const updateDisplay = e => {
     addClickedChar(clickedChar);
   }
 
-  // CALCULATIONS ON FRACTIONS
+  if (clickedChar === ',') {
+    if (num1 && operator && num2) {
+      num2 = Number.parseFloat(num2).toFixed(1);
+    } else if (num1 && !operator) {
+      num1 = Number.parseFloat(num1).toFixed(1);
+    } 
+  }
+
+  // FIX FRACTIONS
 
   if (regDigits.test(clickedChar)) {
     if (outcome) {
-      num1 = clickedChar;
-      outcome = "";
-      resultDisplay.textContent = num1;
+      if (outcome == num1) {
+        num2 = Number(clickedChar);
+        resultDisplay.textContent = num2;
+      } else {
+        num1 = Number(clickedChar);
+        outcome = "";
+        resultDisplay.textContent = num1;
+      }
     } else if (num1 == "-") {
       num1 = Number(`${num1}${clickedChar}`);
     } else if (!num1 && operator) {
       num2 = Number(operationDisplay.textContent);
       resultDisplay.textContent = num2;
     } else if (!num1 || (num1 && !operator)) {
-      num1 = Number(`${num1}${clickedChar}`);
+      num1 = Number(`${Number(num1)}${clickedChar}`);
       resultDisplay.textContent = num1;
     } else {
       num2 = num2 ? Number(`${num2}${clickedChar}`) : Number(clickedChar);
