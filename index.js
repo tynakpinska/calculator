@@ -9,6 +9,8 @@ let operator = "";
 let outcome = "";
 
 const calculate = (num1, num2, operator) => {
+  num1 = Number(num1);
+  num2 = Number(num2);
   operationDisplay.textContent = `${num1} ${operator} ${num2}`;
   if (operator === "/" && num2 === 0) {
     resultDisplay.textContent = "error";
@@ -23,36 +25,38 @@ const calculate = (num1, num2, operator) => {
     case "+":
       outcome =
         (num1 + num2).toString().length > 10
-          ? (num1 + num2).toPrecision(2)
+          ? (num1 + num2).toFixed(5)
           : num1 + num2;
       break;
     case "-":
       outcome =
         (num1 - num2).toString().length > 10
-          ? (num1 - num2).toPrecision(2)
+          ? (num1 - num2).toFixed(5)
           : num1 - num2;
       break;
     case "*":
       outcome =
         (num1 * num2).toString().length > 10
-          ? (num1 * num2).toPrecision(2)
+          ? (num1 * num2).toFixed(5)
           : num1 * num2;
       break;
     case "/":
       outcome =
         (num1 / num2).toString().length > 10
-          ? (num1 / num2).toPrecision(2)
+          ? (num1 / num2).toFixed(5)
           : num1 / num2;
       break;
   }
+
+  outcome = Number(outcome);
 
   return [num1, num2, outcome];
 };
 
 const removeLastChar = () => {
-  operationDisplay.textContent = operationDisplay.textContent.substring(
+  resultDisplay.textContent = resultDisplay.textContent.substring(
     0,
-    operationDisplay.textContent.length - 1
+    resultDisplay.textContent.length - 1
   );
 };
 
@@ -131,45 +135,51 @@ const updateDisplay = e => {
     return;
   }
 
-  if (clickedChar !== "Enter" && clickedChar !== "=" && clickedChar !== ",") {
+  if (
+    clickedChar !== "Enter" &&
+    clickedChar !== "=" &&
+    clickedChar !== "," &&
+    clickedChar !== "."
+  ) {
     addClickedChar(clickedChar);
   }
 
-  if (clickedChar === ",") {
-    if (num1.toString().includes(".")) return;
+  if (clickedChar === "," || clickedChar === ".") {
     if (num1 && operator && num2) {
-      num2 = `${Number(num2)}.`;
-      resultDisplay.textContent = `${Number(num2)}.`;
+      if (num2.toString().includes(".") || num2.toString().includes(","))
+        return;
+      num2 = `${num2}.`;
+      resultDisplay.textContent = num2;
     } else if (num1 && !operator) {
-      num1 = `${Number(num1)}.`;
-      resultDisplay.textContent = `${Number(num1)}.`;
+      if (num1.toString().includes(".") || num1.toString().includes(","))
+        return;
+      num1 = `${num1}.`;
+      resultDisplay.textContent = num1;
     }
   }
 
   if (regDigits.test(clickedChar)) {
     if (outcome) {
-      num1 = Number(clickedChar);
+      num1 = clickedChar;
       outcome = "";
       resultDisplay.textContent = num1;
     } else if (num1 == "-") {
-      num1 = Number(`${num1}${clickedChar}`);
+      num1 = `${num1}${clickedChar}`;
     } else if (!num1 && operator) {
-      num2 = Number(operationDisplay.textContent);
+      num2 = operationDisplay.textContent;
       resultDisplay.textContent = num2;
     } else if (!num1 || (num1 && !operator)) {
       if (num1.toString().includes(".")) {
-        num1 = Number(`${num1.toString()}${clickedChar}`);
+        num1 = `${num1.toString()}${clickedChar}`;
       } else {
-        num1 = Number(`${Number(num1)}${clickedChar}`);
+        num1 = `${num1}${clickedChar}`;
       }
       resultDisplay.textContent = num1;
     } else {
       if (num2.toString().includes(".")) {
-        num2 = num2
-          ? Number(`${num2.toString()}${clickedChar}`)
-          : Number(clickedChar);
+        num2 = num2 ? `${num2.toString()}${clickedChar}` : clickedChar;
       } else {
-        num2 = num2 ? Number(`${num2}${clickedChar}`) : Number(clickedChar);
+        num2 = num2 ? `${num2}${clickedChar}` : clickedChar;
       }
       resultDisplay.textContent = num2;
     }
