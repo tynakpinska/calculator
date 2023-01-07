@@ -2,7 +2,7 @@ let operationDisplay = document.querySelector(".operation");
 let resultDisplay = document.querySelector(".result");
 
 operationDisplay.textContent = "";
-resultDisplay.textContent = 0;
+resultDisplay.textContent = "";
 let num1 = "";
 let num2 = "";
 let operator = "";
@@ -46,13 +46,6 @@ const calculate = (num1, num2, operator) => {
       break;
   }
 
-  console.table({
-    num1,
-    num2,
-    operator,
-    outcome,
-  });
-
   return [num1, num2, outcome];
 };
 
@@ -75,11 +68,11 @@ const replaceOperator = (reg, clickedOperator) => {
 };
 
 const clearData = () => {
-  num1 = 0;
-  num2 = 0;
+  num1 = "";
+  num2 = "";
   operator = "";
   operationDisplay.textContent = "";
-  resultDisplay.textContent = 0;
+  resultDisplay.textContent = "";
 };
 
 const updateDisplay = e => {
@@ -138,20 +131,20 @@ const updateDisplay = e => {
     return;
   }
 
-  if (clickedChar !== "Enter" && clickedChar !== "=") {
+  if (clickedChar !== "Enter" && clickedChar !== "=" && clickedChar !== ",") {
     addClickedChar(clickedChar);
   }
 
   if (clickedChar === ",") {
+    if (num1.toString().includes(".")) return;
     if (num1 && operator && num2) {
-      num2 = Number.parseFloat(num2).toFixed(1);
+      num2 = `${Number(num2)}.`;
+      resultDisplay.textContent = `${Number(num2)}.`;
     } else if (num1 && !operator) {
-      num1 = Number.parseFloat(num1).toFixed(1);
+      num1 = `${Number(num1)}.`;
       resultDisplay.textContent = `${Number(num1)}.`;
     }
   }
-
-  // FIX FRACTIONS
 
   if (regDigits.test(clickedChar)) {
     if (outcome) {
@@ -164,8 +157,13 @@ const updateDisplay = e => {
       num2 = Number(operationDisplay.textContent);
       resultDisplay.textContent = num2;
     } else if (!num1 || (num1 && !operator)) {
-      num1 = Number(`${Number(num1)}${clickedChar}`);
-      resultDisplay.textContent = num1;
+      if (num1.toString().includes(".")) {
+        num1 = Number(`${num1.toString()}${clickedChar}`);
+        resultDisplay.textContent = num1;
+      } else {
+        num1 = Number(`${Number(num1)}${clickedChar}`);
+        resultDisplay.textContent = num1;
+      }
     } else {
       num2 = num2 ? Number(`${num2}${clickedChar}`) : Number(clickedChar);
       resultDisplay.textContent = num2;
