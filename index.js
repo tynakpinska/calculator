@@ -116,6 +116,11 @@ const updateDisplay = e => {
       : e.target.textContent;
 
   if (regOperator.test(clickedChar)) {
+    if (outcome) {
+      num1 = outcome;
+      num2 = "";
+      outcome = "";
+    }
     if (clickedChar == "-" && !num1) {
       num1 = clickedChar;
     } else {
@@ -137,26 +142,22 @@ const updateDisplay = e => {
     addClickedChar(clickedChar);
   }
 
-  if (clickedChar === ',') {
+  if (clickedChar === ",") {
     if (num1 && operator && num2) {
       num2 = Number.parseFloat(num2).toFixed(1);
     } else if (num1 && !operator) {
       num1 = Number.parseFloat(num1).toFixed(1);
-    } 
+      resultDisplay.textContent = `${Number(num1)}.`;
+    }
   }
 
   // FIX FRACTIONS
 
   if (regDigits.test(clickedChar)) {
     if (outcome) {
-      if (outcome == num1) {
-        num2 = Number(clickedChar);
-        resultDisplay.textContent = num2;
-      } else {
-        num1 = Number(clickedChar);
-        outcome = "";
-        resultDisplay.textContent = num1;
-      }
+      num1 = Number(clickedChar);
+      outcome = "";
+      resultDisplay.textContent = num1;
     } else if (num1 == "-") {
       num1 = Number(`${num1}${clickedChar}`);
     } else if (!num1 && operator) {
