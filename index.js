@@ -23,25 +23,25 @@ const calculate = (num1, num2, operator) => {
     case "+":
       outcome =
         (num1 + num2).toString().length > 10
-          ? (num1 + num2).toPrecision(10)
+          ? (num1 + num2).toPrecision(2)
           : num1 + num2;
       break;
     case "-":
       outcome =
         (num1 - num2).toString().length > 10
-          ? (num1 - num2).toPrecision(10)
+          ? (num1 - num2).toPrecision(2)
           : num1 - num2;
       break;
     case "*":
       outcome =
         (num1 * num2).toString().length > 10
-          ? (num1 * num2).toPrecision(10)
+          ? (num1 * num2).toPrecision(2)
           : num1 * num2;
       break;
     case "/":
       outcome =
         (num1 / num2).toString().length > 10
-          ? (num1 / num2).toPrecision(10)
+          ? (num1 / num2).toPrecision(2)
           : num1 / num2;
       break;
   }
@@ -159,13 +159,18 @@ const updateDisplay = e => {
     } else if (!num1 || (num1 && !operator)) {
       if (num1.toString().includes(".")) {
         num1 = Number(`${num1.toString()}${clickedChar}`);
-        resultDisplay.textContent = num1;
       } else {
         num1 = Number(`${Number(num1)}${clickedChar}`);
-        resultDisplay.textContent = num1;
       }
+      resultDisplay.textContent = num1;
     } else {
-      num2 = num2 ? Number(`${num2}${clickedChar}`) : Number(clickedChar);
+      if (num2.toString().includes(".")) {
+        num2 = num2
+          ? Number(`${num2.toString()}${clickedChar}`)
+          : Number(clickedChar);
+      } else {
+        num2 = num2 ? Number(`${num2}${clickedChar}`) : Number(clickedChar);
+      }
       resultDisplay.textContent = num2;
     }
   }
