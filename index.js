@@ -64,13 +64,6 @@ const addClickedChar = clickedChar => {
   operationDisplay.textContent = operationDisplay.textContent + clickedChar;
 };
 
-const replaceOperator = (reg, clickedOperator) => {
-  operationDisplay.textContent = operationDisplay.textContent.replace(
-    reg,
-    clickedOperator
-  );
-};
-
 const clearData = () => {
   num1 = "";
   num2 = "";
@@ -110,7 +103,6 @@ const updateDisplay = e => {
   e.preventDefault();
 
   let regOperator = new RegExp(/[\+\-\*\/]/g);
-  let regOperatorEnd = new RegExp(/[\+\-\*\/]$/);
   let regDigits = new RegExp(/[0-9]/);
 
   // if clicked key is not an operator or a digit, don't do anything
@@ -164,6 +156,8 @@ const updateDisplay = e => {
     }
   }
 
+  // fix clicking operator before clicking enter
+  
   if (regOperator.test(clickedChar)) {
     if (outcome) {
       num1 = outcome;
@@ -179,15 +173,6 @@ const updateDisplay = e => {
 
   if (regDigits.test(clickedChar)) {
     handleDigit(clickedChar);
-  }
-
-  // if clicked character is operator and the last character in display is also operator, exchange operator to the clicked one
-  if (
-    regOperator.test(clickedChar) &&
-    regOperatorEnd.test(operationDisplay.textContent)
-  ) {
-    replaceOperator(regOperatorEnd, clickedChar);
-    return;
   }
 
   operationDisplay.textContent = `${num1} ${operator}`;
