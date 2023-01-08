@@ -24,25 +24,25 @@ const calculate = (num1, num2, operator) => {
   switch (operator) {
     case "+":
       outcome =
-        (num1 + num2).toString().length > 10
+        (num1 + num2).toString().length > 5
           ? (num1 + num2).toFixed(5)
           : num1 + num2;
       break;
     case "-":
       outcome =
-        (num1 - num2).toString().length > 10
+        (num1 - num2).toString().length > 5
           ? (num1 - num2).toFixed(5)
           : num1 - num2;
       break;
     case "*":
       outcome =
-        (num1 * num2).toString().length > 10
+        (num1 * num2).toString().length > 5
           ? (num1 * num2).toFixed(5)
           : num1 * num2;
       break;
     case "/":
       outcome =
-        (num1 / num2).toString().length > 10
+        (num1 / num2).toString().length > 5
           ? (num1 / num2).toFixed(5)
           : num1 / num2;
       break;
@@ -79,6 +79,33 @@ const clearData = () => {
   resultDisplay.textContent = "";
 };
 
+const handleDigit = clickedChar => {
+  if (outcome) {
+    num1 = clickedChar;
+    outcome = "";
+    resultDisplay.textContent = num1;
+  } else if (num1 == "-") {
+    num1 = `${num1}${clickedChar}`;
+  } else if (!num1 && operator) {
+    num2 = operationDisplay.textContent;
+    resultDisplay.textContent = num2;
+  } else if (!num1 || (num1 && !operator)) {
+    if (num1.toString().includes(".")) {
+      num1 = `${num1.toString()}${clickedChar}`;
+    } else {
+      num1 = `${num1}${clickedChar}`;
+    }
+    resultDisplay.textContent = num1;
+  } else {
+    if (num2.toString().includes(".")) {
+      num2 = num2 ? `${num2.toString()}${clickedChar}` : clickedChar;
+    } else {
+      num2 = num2 ? `${num2}${clickedChar}` : clickedChar;
+    }
+    resultDisplay.textContent = num2;
+  }
+};
+
 const updateDisplay = e => {
   e.preventDefault();
 
@@ -95,35 +122,14 @@ const updateDisplay = e => {
       e.key === "Backspace" ||
       e.key === "Enter" ||
       e.key === "Delete" ||
-      e.key === ","
+      e.key === "," ||
+      e.key === "."
     )
   ) {
     return;
   }
 
-  let clickedChar =
-    e.key &&
-    (e.key.match(regDigits) ||
-      e.key.match(regOperator) ||
-      e.key === "Backspace" ||
-      e.key === "Enter" ||
-      e.key === "Delete" ||
-      e.key === ",")
-      ? e.key
-      : e.target.textContent;
-
-  if (regOperator.test(clickedChar)) {
-    if (outcome) {
-      num1 = outcome;
-      num2 = "";
-      outcome = "";
-    }
-    if (clickedChar == "-" && !num1) {
-      num1 = clickedChar;
-    } else {
-      operator = clickedChar;
-    }
-  }
+  let clickedChar = e.key ? e.key : e.target.textContent;
 
   if (clickedChar === "CLEAR" || clickedChar === "Delete") {
     clearData();
@@ -158,31 +164,21 @@ const updateDisplay = e => {
     }
   }
 
-  if (regDigits.test(clickedChar)) {
+  if (regOperator.test(clickedChar)) {
     if (outcome) {
-      num1 = clickedChar;
+      num1 = outcome;
+      num2 = "";
       outcome = "";
-      resultDisplay.textContent = num1;
-    } else if (num1 == "-") {
-      num1 = `${num1}${clickedChar}`;
-    } else if (!num1 && operator) {
-      num2 = operationDisplay.textContent;
-      resultDisplay.textContent = num2;
-    } else if (!num1 || (num1 && !operator)) {
-      if (num1.toString().includes(".")) {
-        num1 = `${num1.toString()}${clickedChar}`;
-      } else {
-        num1 = `${num1}${clickedChar}`;
-      }
-      resultDisplay.textContent = num1;
-    } else {
-      if (num2.toString().includes(".")) {
-        num2 = num2 ? `${num2.toString()}${clickedChar}` : clickedChar;
-      } else {
-        num2 = num2 ? `${num2}${clickedChar}` : clickedChar;
-      }
-      resultDisplay.textContent = num2;
     }
+    if (clickedChar == "-" && !num1) {
+      num1 = clickedChar;
+    } else {
+      operator = clickedChar;
+    }
+  }
+
+  if (regDigits.test(clickedChar)) {
+    handleDigit(clickedChar);
   }
 
   // if clicked character is operator and the last character in display is also operator, exchange operator to the clicked one
