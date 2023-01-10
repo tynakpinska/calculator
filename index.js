@@ -58,6 +58,7 @@ const removeLastChar = () => {
     0,
     resultDisplay.textContent.length - 1
   );
+  num2 = resultDisplay.textContent;
 };
 
 const addClickedChar = clickedChar => {
@@ -156,8 +157,6 @@ const updateDisplay = e => {
     }
   }
 
-  // fix clicking operator before clicking enter
-  
   if (regOperator.test(clickedChar)) {
     if (outcome) {
       num1 = outcome;
@@ -166,8 +165,18 @@ const updateDisplay = e => {
     }
     if (clickedChar == "-" && !num1) {
       num1 = clickedChar;
-    } else {
+    }
+    if (!num2) {
       operator = clickedChar;
+    }
+    if (num2) {
+      let result = calculate(num1, num2, operator);
+      outcome = result[2];
+      num1 = outcome;
+      num2 = "";
+      operator = clickedChar;
+      resultDisplay.textContent = "";
+      outcome = "";
     }
   }
 
