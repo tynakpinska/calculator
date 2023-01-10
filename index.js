@@ -201,10 +201,6 @@ const updateDisplay = e => {
   }
 };
 
-const buttons = document.querySelectorAll("button");
-
-buttons.forEach(button => {
-  button.addEventListener("mouseup", updateDisplay);
-});
-
+let buttons = document.querySelector(".buttons");
+buttons.addEventListener("mouseup", updateDisplay);
 window.addEventListener("keydown", updateDisplay);
