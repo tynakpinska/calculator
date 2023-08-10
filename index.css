@@ -20,12 +20,12 @@ body {
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  width: 20vw;
+  width: 10rem;
   color: blanchedalmond;
 }
 
 .display {
-    width: 100%;
+  width: 100%;
 }
 
 .operation,
@@ -39,28 +39,41 @@ body {
   justify-content: center;
   align-items: center;
   margin-bottom: 10px;
-  opacity: .8;
+  opacity: 0.8;
 }
 
-.digits, .operators, .functions {
-    width: 100%;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-gap: 8px;
-    margin-bottom: 5px;
+.digits,
+.operators,
+.functions {
+  display: grid;
+  grid-gap: 8px;
+  margin-bottom: 5px;
 }
 
 .digits {
-    grid-template-rows: repeat(4, 1fr);
+  width: 75%;
+  grid-template-columns: repeat(3, 1fr);
+  margin: 0 auto 20px auto;
+}
+
+.operators,
+.functions {
+  width: 100%;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.digits {
+  grid-template-rows: repeat(4, 1fr);
 }
 
 button {
   background-color: rgb(238, 238, 172);
   border-radius: 10px;
   align-self: stretch;
-  height: 5vw;
+  width: 4rem;
+  height: 4rem;
   font-size: 20px;
-  opacity: .8;
+  opacity: 0.8;
   border: none;
 }
 
